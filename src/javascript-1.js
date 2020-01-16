@@ -27,3 +27,13 @@ function calculate(firstOperand, operator, secondOperand) {
     return result;
 }
 
+/* 
+* Finds the number which has highest square and returns it
+*
+* @param first - integer
+* @param second - integer
+* @result integer     
+*/
+function squareMax(first, second) {
+    return ((Math.pow(first,2)) > (Math.pow(second,2)))? first : second; 
+}
