@@ -1,8 +1,10 @@
 /*
-@param  firstOperand - number
-@param secondOperand - number  
-@param operator - string representing a mathematical operator
-@return result - string representing result of math operation
+* performs mathematical operation and returns output
+*
+* @param  firstOperand - number
+* @param secondOperand - number  
+* @param operator - string representing a mathematical operator
+* @return result - string representing result of math operation
 */
 
 function calculate(firstOperand, operator, secondOperand) {
@@ -27,4 +29,15 @@ function calculate(firstOperand, operator, secondOperand) {
         default : result = "Invalid operation or operands";
     }
     return result;
+}
+
+/* 
+* Finds the number which has highest square and returns it
+*
+* @param first - integer
+* @param second - integer
+* @result integer     
+*/
+function squareMax(first, second) {
+    return ((Math.pow(first,2)) > (Math.pow(second,2)))? first : second; 
 }
