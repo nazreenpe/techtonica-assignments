@@ -7,25 +7,30 @@
 */
 
 function calculate(firstOperand, operator, secondOperand) {
-    let result = "";
-    switch(operator) {
-        case "+" : result = `Sum of ${firstOperand} and ${secondOperand} is: ${firstOperand + secondOperand}`;
-                    break;
-        case "*" : result = `Product of ${firstOperand} and ${secondOperand} is: ${firstOperand * secondOperand}`;
-                    break;
-        case "/" : result = `Quotient of ${firstOperand} / ${secondOperand} is: ${firstOperand / secondOperand}`;
-                    break;
-        case "-" : result = `Difference between ${firstOperand} and ${secondOperand} is: ${firstOperand - secondOperand}`;
-                    break;
-        case "%" : result = `Reminder of ${firstOperand} and ${secondOperand} is: ${firstOperand % secondOperand}`;
-                    break;
-        case "min" : result = `Minimum of ${firstOperand} and ${secondOperand} is: ${Math.min(firstOperand, secondOperand)}`;
-                    break;
-        case "max" : result = `Maximum of ${firstOperand} and ${secondOperand} is: ${Math.max(firstOperand, secondOperand)}`;
-                    break;
-        default : result = "Invalid operation or operands";
-    } 
-    return result;
+    switch (operator) {
+        case "+":
+            return `Sum of ${firstOperand} and ${secondOperand} is: ${firstOperand + secondOperand}`;
+        case "*":
+            return `Product of ${firstOperand} and ${secondOperand} is: ${firstOperand * secondOperand}`;
+        case "/":
+            return `Quotient of ${firstOperand} / ${secondOperand} is: ${firstOperand / secondOperand}`;
+        case "-":
+            return `Difference between ${firstOperand} and ${secondOperand} is: ${firstOperand - secondOperand}`;
+        case "%":
+            return `Reminder of ${firstOperand} and ${secondOperand} is: ${firstOperand % secondOperand}`;
+        case "min":
+        case "MIN":
+        case "MINIMUM":
+        case "minimum":
+            return `Minimum of ${firstOperand} and ${secondOperand} is: ${Math.min(firstOperand, secondOperand)}`;
+        case "max":
+        case "MAX":
+        case "MAXIMUM":
+        case "maximum":
+            return `Maximum of ${firstOperand} and ${secondOperand} is: ${Math.max(firstOperand, secondOperand)}`;
+        default:
+            return "Invalid operation or operands";
+    }
 }
 
 /* 
@@ -36,7 +41,7 @@ function calculate(firstOperand, operator, secondOperand) {
 * @return integer     
 */
 function squareMax(first, second) {
-    return ((Math.pow(first,2)) > (Math.pow(second,2)))? first : second; 
+    return ((Math.pow(first, 2)) > (Math.pow(second, 2))) ? first : second;
 }
 
 
@@ -45,11 +50,11 @@ function squareMax(first, second) {
 * @param array
 * @return array
 */
-function printCuteAnimals(animals){
+function printCuteAnimals(animals) {
     let cuteAnimals = [];
     for (const index in animals) {
-        if(index % 2 == 0) {
-            cuteAnimals.push(animals[index]);            
+        if (index % 2 == 0) {
+            cuteAnimals.push(animals[index]);
         }
     }
     console.log(`cute animals are: ${cuteAnimals}\n`);
@@ -61,6 +66,3 @@ function printCuteAnimals(animals){
     console.log(`Animals after concatinating more animals to it : \n${animals.join(" ")}.\n And its length is ${animals.length}\n`);
     return animals;
 }
-
-
-
