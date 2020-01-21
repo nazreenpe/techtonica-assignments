@@ -41,3 +41,16 @@ function getGrade(score) {
     return grade;
 }
 
+/*
+Generated a random number between 0 and 1. Checks if it is above or below 0.5
+Consoles the result 
+*/
+let checkRandom = () => {
+    random = Math.random();
+    if (random > 0.5) console.log(`${random} is Over 0.5`);
+    else console.log(`${random} is under 0.5`);
+}
+
+checkRandom();
+
+
