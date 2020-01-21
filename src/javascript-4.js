@@ -9,11 +9,27 @@ function printVacations(namesAndDestinations) {
         let name = nameAndDestination[0];
         let destination = "";
         for (let i = 1; i < nameAndDestination.length; i++) {
-            destination += `${nameAndDestination[i]}, `;
+            if (nameAndDestination[1][0].length > 1) {
+                for (let j = 0; j < nameAndDestination[i].length; j++) {
+                    destination += `${nameAndDestination[i][j]}`;
+                    if (j !== nameAndDestination[i].length - 1) {
+                        destination += " or ";
+                    }
+                }
+            } else {
+                destination += ` ${nameAndDestination[i]}`;
+            }
+
         }
-        console.log(`${name} really wants to go to ${destination}`);
+        console.log(`${name} really wants to go to ${destination}.`);
     }
 }
 
 let data = [['Tammy', 'Tahiti'], ['Erin', 'Banff, Alberta, Canada'], ['Janet', 'London']];
 printVacations(data);
+console.log("     ----    ");
+
+let input = [['Tammy', ['Tahiti', 'Bali', 'Hawaii']], ['Erin', ['Banff, Alberta, Canada', 'Iceland']], ['Janet', ['London', 'Hogwarts']]];
+printVacations(input);
+
+
