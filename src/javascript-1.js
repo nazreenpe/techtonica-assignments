@@ -66,3 +66,4 @@ function printCuteAnimals(animals) {
     console.log(`Animals after concatinating more animals to it : \n${animals.join(" ")}.\n And its length is ${animals.length}\n`);
     return animals;
 }
+
