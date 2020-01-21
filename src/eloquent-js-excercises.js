@@ -150,7 +150,7 @@ modifies the array given as argument by reversing its elements
 function reverseArrayInPlace(inputArray) {
     let temp = [];
     const length = inputArray.length - 1;
-    
+
     for (let i = 0; i <= length; i++) {
         const element = inputArray.pop();
         temp.push(element);
@@ -161,3 +161,31 @@ function reverseArrayInPlace(inputArray) {
     }
     return inputArray;
 }
+
+/*
+Using reduce method in combination with the concat method to “flatten” 
+an array of arrays into a single array that has all the elements of
+ the original arrays.
+*/
+const data = [[3, 6, 7], [12, 23, 34, 45], [500, 40, 30]];
+const flattenedData = data.reduce((a, b) => a.concat(b));
+console.log(flattenedData);
+
+function loop(value, test, update, body){
+    for(let start = value; test(start); start = update(start)) {
+        body(start);
+    }
+}
+
+loop(8, i => i > 1, i => i - 2, console.log);
+
+/* 
+every method true when the given function
+returns true for every element in the array.
+ */
+const odd = (n => n > 50);
+const scores = [34, 67, 50, 55, 100];
+const checkAllStudentsPassed = scores.every(odd);
+console.log(`All students have passed : ${checkAllStudentsPassed}`);
+
+
