@@ -25,11 +25,23 @@ function printVacations(namesAndDestinations) {
     }
 }
 
+// Testing printVacation function
 let data = [['Tammy', 'Tahiti'], ['Erin', 'Banff, Alberta, Canada'], ['Janet', 'London']];
 printVacations(data);
-console.log("     ----    ");
-
+console.log();
 let input = [['Tammy', ['Tahiti', 'Bali', 'Hawaii']], ['Erin', ['Banff, Alberta, Canada', 'Iceland']], ['Janet', ['London', 'Hogwarts']]];
 printVacations(input);
+console.log();
 
+/*
+prints the multiplication of a given number
+@param num - number
+*/
+function multiplicationTable(num) {
+    console.log(`Multiplication table of ${num}`);
+    for (let i = 1; i <= 10; i++) {
+        console.log(`${num} * ${i} = ${num * i}`);
+    }
+}
 
+multiplicationTable(6);
