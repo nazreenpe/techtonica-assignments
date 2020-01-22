@@ -45,3 +45,33 @@ function multiplicationTable(num) {
 }
 
 multiplicationTable(6);
+
+/*
+It takes a string, , consisting of lowercase English alphabetic letters (i.e., a through z).
+And first, print each vowel in  on a new line, in the same order as it appeared in .
+Second, print each consonant (i.e., non-vowel) in  on a new line in the same order as it appeared in .
+*/
+function vowelsAndConsonents(s) {
+    let letters = s.split('');
+    let vowels = [], consonents = [];
+    for (const letter of letters) {
+        if (letter === 'a' || letter === 'e' || letter === 'i' || letter === 'o' || letter === 'u') {
+            vowels.push(letter);
+
+        } else {
+            consonents.push(letter);
+        }
+    }
+
+    for (const vowel of vowels) {
+        console.log(vowel);
+
+    }
+
+    for (const consonent of consonents) {
+        console.log(consonent);
+
+    }
+
+}
+vowelsAndConsonents("javascriptloops");
