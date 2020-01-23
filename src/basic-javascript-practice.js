@@ -80,7 +80,73 @@ function sleep_in(weekday, vacation) {
     return true;
 }
 
+/*
+Takes 2 arrays of ints, a and b, return True if they have the same first element or 
+they have the same last element. Both arrays will be length 1 or more.
+@param a, b - arrays of integers
+@return boolean
+*/
+function common(a, b) {
+    return (a[0] === b[0] || a[a.length - 1] === b[b.length - 1]) ? true : false;
+}
 
+/*
+Practice  creatingobjects, loging them and remove key-value pairs in objects
+*/
+function objectsAndKeysChallenge() {
+    let person = {
+        title: "Olympian",
+        fName: "Ibtihaj",
+        lName: "Mohammed",
+        name: () => {
+            return this.fName + " " + this.lName;
+        },
+        job: "Fencer",
+        country: "USA"
+    };
+    console.log(person);
+    delete person.fName;
+    console.log(person);
+}
+
+/*
+practice array of objects
+*/
+function mutatingObjects() {
+    let sheros = [
+        {
+            name: "Ibtihaj Mohammed",
+            career: 'Sports - Fencing'
+        },
+        {
+            name: 'Manal A Rostam',
+            career: 'Sports - runner'
+        },
+        {
+            name: 'Halima Aden',
+            career: "Modelling"
+        },
+        {
+            name: 'Hasna Habeeb',
+            career: "Teacher"
+        }
+    ];
+
+    console.log(sheros);
+
+    mutateSecondKeys(sheros);
+    console.log(sheros);
+
+}
+
+function mutateSecondKeys(items) {
+    for (const item of items) {
+        let itemKeys = Object.keys(item);
+        console.log(itemKeys[1]);
+        Object.defineProperty(item, "expertise", Object.getOwnPropertyDescriptor(item, itemKeys[1]));
+        delete item[itemKeys[1]];
+    }
+}
 
 /*
 Logs results of functions
@@ -98,7 +164,11 @@ function main() {
     console.log(sleep_in(false, false));
     console.log(sleep_in(true, false));
     console.log(sleep_in(false, true));
-
+    console.log(common([1, 2, 3], [7, 3]));
+    console.log(common([1, 2, 3], [1, 0]));
+    console.log(common([1, 2, 3], [7, 3, 2]));
+    objectsAndKeysChallenge();
+    mutatingObjects()
 }
 
 main();
