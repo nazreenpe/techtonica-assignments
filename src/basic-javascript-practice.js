@@ -19,9 +19,47 @@ function loopThrough(n) {
     }
 }
 
+function calculateSum(n) {
+    let sum = 0;
+    for (let i = 0; i <= n; i++) {
+        sum += i;
+    }
+    return sum;
+}
 
+/*
+Takes an input number n and prints numbers 1 to n
+if number is divisible by 3 : prints "Fizz"
+if number is divisible by 5 : prints "Buzz"
+if number is divisible by 3 and 5 : prints "FizzBuzz"
+@param n - number
+*/
+function fizzbuzz(n) {
+    for (let i = 1; i <= n; i++) {
+        if (i % 15 == 0) {
+            console.log("FizzBuzz");
+        } else if (i % 3 == 0) {
+            console.log("Fizz");
 
+        } else if (i % 5 == 0) {
+            console.log("Buzz");
 
+        } else {
+            console.log(i);
+
+        }
+    }
+}
+
+/*
+Find factorial of a given number and returns the value
+@param n - number
+@return number
+*/
+function findFactorial(n) {
+    if (n === 1 || n === 0) return 1;
+    return n * findFactorial(n - 1);
+}
 
 
 /*
@@ -32,9 +70,11 @@ function main() {
     const inches = meterToInches(meters);
     console.log(`${meters} meters = ${inches} inches`);
     console.log();
-    let n = 4;
+    let n = Math.floor(Math.random() * 20);
     loopThrough(n);
-    
+    console.log(`Sum of numbers from 0 to ${n} is ${calculateSum(n)}`);
+    fizzbuzz(30);
+    console.log(`Factorial of ${n} is ${findFactorial(n)}`);
 
 }
 
