@@ -61,6 +61,26 @@ function findFactorial(n) {
     return n * findFactorial(n - 1);
 }
 
+/*
+Takes two boolean parameters. The parameter weekday is True if it is a weekday, and the
+ parameter vacation is True if we are on vacation. We sleep in if it is not a weekday
+or we're on vacation. Return True if we sleep in.
+@param weekday, vacation - boolean
+@return boolean
+*/
+function sleep_in(weekday, vacation) {
+    switch (true) {
+        case !weekday && !vacation:
+            break;
+        case vacation:
+            break;
+        default:
+            return false;
+    }
+    return true;
+}
+
+
 
 /*
 Logs results of functions
@@ -75,6 +95,9 @@ function main() {
     console.log(`Sum of numbers from 0 to ${n} is ${calculateSum(n)}`);
     fizzbuzz(30);
     console.log(`Factorial of ${n} is ${findFactorial(n)}`);
+    console.log(sleep_in(false, false));
+    console.log(sleep_in(true, false));
+    console.log(sleep_in(false, true));
 
 }
 
