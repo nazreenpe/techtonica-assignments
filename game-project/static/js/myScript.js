@@ -23,7 +23,7 @@ $(document).ready(function () {
                 $(".text-response").html("Yaay! Right guess. Congratulations");
             } else {
                 if (guess > random) {
-                    $(".text-response").html("Your guess is larger than the hidden number")
+                    $(".text-response").html("Your guess is larger than the hidden number");
                 } else {
                     $(".text-response").html("Your guess is smaller than the hidden number");
                 }
