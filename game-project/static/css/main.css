@@ -1,7 +1,11 @@
 body, html {
-    background-image: url(http://clipart-library.com/images/piqrk7gxT.jpg.jpg);
-    background-position: center;
+    background-image: url(https://wallpaperaccess.com/full/425923.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
+}
+
+.pacifico {
+    font-family: 'Pacifico', cursive;
+    font-size: 75 px;
 }
