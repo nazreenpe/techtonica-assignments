@@ -1,37 +1,80 @@
+moment = require('moment');
+
 class EventRecommender {
     constructor() {
-    // All main properties should go here.
-    
-    this.events = [];
-    this.users = [];
-    
+        this.events = [];
+        this.users = [];
+        this.userEvents = [];
     }
 
-    addEvent() {
-    // Adds a new Event to the System
+    addEvent(event) {
+        this.events.push(event);
     }
 
-    addUser() {
-    // Adds a new User to the System
+    addUser(user) {
+        this.users.push(user);
     }
 
-    saveUserEvent(){
-    // Allow users to save events to a personal Events array.
+    saveUserEvent(uId, eId) {
+        let element = {};
+        let userKey = this.users.filter(user => user.uId === uId);
+        let elementValue = this.events.filter(event => event.eId === eId);
+
+        if(this.userEvents.includes(userKey)) {
+            this.userEvents[userKey].push(elementValue);
+        } else {
+            element[userKey] = elementValue;
+            this.userEvents.push(element); 
+        }
+        // Allow users to save events to a personal Events array.
     }
 
-    deleteUser() {
-    // Deletes a User from the system
-    }
-   
-    deleteEvent() {
-    // Deletes the Event from the system
+    deleteUser(id) {
+        delete this.users.filter(user => user.uId === id);
     }
 
-    findEventsByDate(){
-    // Returns all events on a given date
+    deleteEvent(id) {
+        delete this.events.filter(event => event.eId === id);
     }
-    
-    findEventsbyCategory(){
-    // Returns all events in a given category
+
+    findEventsByDate(date) {
+        let filteringDate = moment(new Date(date)).format('MMM DD YYYY');
+        return this.events.filter(event => event.date === filteringDate);
+
+    }
+
+    findEventsbyCategory(category) {
+        return this.events.filter(event => event.category == category);
     }
 }
+
+class User {
+    constructor(fName, lName) {
+        this.fName = fName || "Anonymous";
+        this.lName = lName || "";
+        this.uId = Math.random().toString(36).substr(2, 9);
+    }
+
+    get name() {
+        return this.fName + " " + this.lName;
+    }
+}
+
+class Event {
+    constructor(eventName, date, category) {
+        this.eventName = eventName || "Anonymous Event!";
+        this.date = moment(new Date(date)).format('MMM DD YYYY') || '';
+        this.category = category || "Random";
+        this.eId = Math.random().toString(36).substr(2, 9);
+    }
+
+    addCategory(category) {
+        this.category = category;
+    }
+    addDate(date) {
+        this.date = moment(new Date(date)).format('MMM DD YYYY');
+    }
+}
+
+module.exports = { EventRecommender, User, Event};
+
