@@ -2,49 +2,54 @@ moment = require('moment');
 
 class EventRecommender {
     constructor() {
-        this.events = [];
-        this.users = [];
-        this.userEvents = [];
+        this.events = Object.create(null);
+        this.users = Object.create(null);
+        this.userEvents = Object.create(null);
     }
 
     addEvent(event) {
-        this.events.push(event);
+        this.events[event.eId] = event;
     }
 
     addUser(user) {
-        this.users.push(user);
+        this.users[user.uId] = user;
     }
 
     saveUserEvent(uId, eId) {
-        let element = {};
-        let userKey = this.users.filter(user => user.uId === uId);
-        let elementValue = this.events.filter(event => event.eId === eId);
-
-        if(this.userEvents.includes(userKey)) {
-            this.userEvents[userKey].push(elementValue);
-        } else {
-            element[userKey] = elementValue;
-            this.userEvents.push(element); 
+        if (this.users[uId] != null && this.events[eId] != null) {
+            if (this.userEvents[uId] == null) {
+                this.userEvents[uId] = [eId];
+            } else {
+                this.userEvents[uId].push(eId);
+            }
         }
-        // Allow users to save events to a personal Events array.
     }
 
     deleteUser(id) {
-        delete this.users.filter(user => user.uId === id);
+        delete this.users[id];
     }
 
     deleteEvent(id) {
-        delete this.events.filter(event => event.eId === id);
+        delete this.events[id];
     }
 
     findEventsByDate(date) {
         let filteringDate = moment(new Date(date)).format('MMM DD YYYY');
-        return this.events.filter(event => event.date === filteringDate);
-
+        let eventKeys = Object.keys(this.events).filter(
+            key => this.events[key].date == filteringDate
+        );
+        let eventsByDate = [];
+        eventKeys.forEach(key => eventsByDate.push(this.events[key]));
+        return eventsByDate;
     }
 
     findEventsbyCategory(category) {
-        return this.events.filter(event => event.category == category);
+        let eventKeys = Object.keys(this.events).filter(
+            key => this.events[key].category == category
+        );
+        let eventsByCategory = [];
+        eventKeys.forEach(key => eventsByCategory.push(this.events[key]));
+        return eventsByCategory;
     }
 }
 
@@ -76,5 +81,5 @@ class Event {
     }
 }
 
-module.exports = { EventRecommender, User, Event};
+module.exports = { EventRecommender, User, Event };
 

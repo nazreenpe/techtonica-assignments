@@ -1,30 +1,31 @@
 describe("EventRecommender", () => {
   const { EventRecommender, User, Event } = require('../src/eventRecommender.js'); // Update with your class names and file name
-  let er;
+  let er, event, user;
 
   beforeEach(() => {
     er = new EventRecommender();
-    event = new Event("Indonasian Food festival", "March 27 2020", "Food");
+    event = new Event("Indonasian Food festival", "3 27 2020", "Food");
     user = new User("Fathima", "Zariya");
+    foodEvent = new Event("Halal food fest", "3 4 2020", "Food");
   });
 
   describe("addEvent", () => {
     it("adds a new Event to the system", () => {
       er.addEvent(event);
-      expect(er.events.length).toEqual(1);
-      expect(er.events[0].eventName).toEqual("Indonasian Food festival");
-      expect(er.events[0].date).toEqual("Mar 27 2020");
-      expect(er.events[0].category).toEqual("Food");
+      expect(Object.keys(er.events).length).toEqual(1);
+      expect(er.events[event.eId].eventName).toEqual("Indonasian Food festival");
+      expect(er.events[event.eId].date).toEqual("Mar 27 2020");
+      expect(er.events[event.eId].category).toEqual("Food");
     });
   });
 
   describe("addUser", () => {
     it("adds a new User to the system", () => {
       er.addUser(user);
-      expect(er.users.length).toEqual(1);
-      expect(er.users[0].fName).toEqual("Fathima");
-      expect(er.users[0].lName).toEqual("Zariya");
-      expect(er.users[0].name).toEqual("Fathima Zariya");
+      expect(Object.keys(er.users).length).toEqual(1);
+      expect(er.users[user.uId].fName).toEqual("Fathima");
+      expect(er.users[user.uId].lName).toEqual("Zariya");
+      expect(er.users[user.uId].name).toEqual("Fathima Zariya");
     });
   });
 
@@ -32,25 +33,40 @@ describe("EventRecommender", () => {
     it("adds an event to a user's personal event array", () => {
       er.addEvent(event);
       er.addUser(user);
-      er.saveUserEvent(event.eId, user.uId); // change these to match your method signature
-      expect(er.userEvents.length).toEqual(1);
-      // expect(er.userEvents[0].user.name).isEqual("Fathima Zariya");
+      er.saveUserEvent(user.uId, event.eId);
+      expect(er.userEvents[user.uId]).toBeDefined();
     });
   });
 
-  // describe("deleteUser", () => {
-  //   it("removes a User from the system", () => {
-  //     er.addUser("Make a new user here that you will delete later");
-  //     er.deleteUser("Change Me");
-  //     expect(er.user.length).toEqual(0);
-  //   });
-  // });
+  describe("deleteUser", () => {
+    it("removes a User from the system", () => {
+      er.addUser(user);
+      er.deleteUser(user.uId);
+      expect(er.users[user.uId]).toBeUndefined();
+    });
+  });
 
-  // describe("deleteEvent", () => {
-  //   it("removes the event from the system", () => {
-  //     er.addEvent("A new event that you will delete later");
-  //     er.deleteEvent("Change Me");
-  //     expect(er.events.length).toEqual(0);
-  //   });
-  // });
+  describe("deleteEvent", () => {
+    it("removes the event from the system", () => {
+      er.addEvent(event);
+      er.deleteEvent(event.eId);
+      expect(er.events[event.eId]).toBeUndefined();
+    });
+  });
+
+  describe("findEventsByDate", () => {
+    it("finds and returns events by date", () => {
+      er.addEvent(event);
+      er.addEvent(foodEvent);
+      expect(er.findEventsByDate("March 4 2020")[0].eventName).toEqual("Halal food fest");
+    })
+  })
+
+  describe("findEventsByCategory", () => {
+    it("finds and returns events by category", () => {
+      er.addEvent(event);
+      er.addEvent(foodEvent);
+      expect(er.findEventsbyCategory("Food").length).toEqual(2);
+    })
+  })
 });
