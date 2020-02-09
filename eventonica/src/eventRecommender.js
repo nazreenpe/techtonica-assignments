@@ -76,5 +76,7 @@ class Event {
     }
 }
 
-module.exports = { EventRecommender, User, Event};
+if (typeof module != 'undefined'){
+    module.exports = { EventRecommender, User,  Event} 
+}
 
