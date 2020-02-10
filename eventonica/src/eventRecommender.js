@@ -1,5 +1,3 @@
-moment = require('moment');
-
 class EventRecommender {
     constructor() {
         this.events = Object.create(null);
@@ -25,12 +23,21 @@ class EventRecommender {
         }
     }
 
-    deleteUser(id) {
-        delete this.users[id];
+    deleteUser(id, password) {
+        if(this.users[id] != null && this.users[id].password == password) {
+            delete this.users[id];
+            return true;
+        }
+        return false;
     }
 
     deleteEvent(id) {
-        delete this.events[id];
+        if(this.events[id] != null) {
+            delete this.events[id];
+            return true;
+        } else {
+            return false;
+        }
     }
 
     findEventsByDate(date) {
@@ -54,9 +61,10 @@ class EventRecommender {
 }
 
 class User {
-    constructor(fName, lName) {
+    constructor(fName, lName, password) {
         this.fName = fName || "Anonymous";
         this.lName = lName || "";
+        this.password = password;
         this.uId = Math.random().toString(36).substr(2, 9);
     }
 
@@ -81,5 +89,8 @@ class Event {
     }
 }
 
-module.exports = { EventRecommender, User, Event };
+if (typeof module != 'undefined'){
+    module.exports = { EventRecommender, User,  Event} 
+}
+
 
