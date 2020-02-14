@@ -65,13 +65,14 @@ console.log(eventObj3.allTickets());
 
 console.log(eventObj3.searchTickets(0, 250));
 console.log(eventObj3.searchTickets(20, 50));
+console.log(eventObj3.searchTickets(50, 50));
 
 
 
 $(document).ready(function () {
     let html = "";
     $.each(eventArray, function (index, item) {
-        html += `<li>${item.name} - ${item.description} - ${item.searchTickets(0, 250)}`;
+        html += `<li>${item.name} - ${item.description} - ${item.searchTickets(-20, 200)}`;
     });
     $("#event").html(html);
 });
