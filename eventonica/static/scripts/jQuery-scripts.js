@@ -31,7 +31,7 @@ $(document).ready(() => {
         let id = $("#delete-user-id").val();
         let password = $("#delete-password").val();
         if (eventRecommender.deleteUser(id, password)) {
-           $(`#${all-users} #${id}`).remove();
+           $(`#${all-users}`).remove(`#${id}`);
            $("#error-message").remove();
         } else {
             $("#error-message").text("Please enter a valid userID and password");
@@ -54,7 +54,7 @@ $(document).ready(() => {
      $("#delete-event").submit(function(e) {
         let id = $("#delete-event-id").val();
         if (eventRecommender.deleteEvent(id)) {
-           $(`#${all-users} #${id}`).remove();
+           $(`#${all-users}`).remove(`#${id}`);
            $("#error-message").remove();
         } else {
             $("#delete-event-error").text("Please enter a valid eventID");
