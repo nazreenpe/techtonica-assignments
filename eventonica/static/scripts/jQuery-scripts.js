@@ -1,8 +1,20 @@
 $(document).ready(() => {
     const eventRecommender = new EventRecommender();
-    let displayUsersHtml = '';
-    let displayEventsHtml = '';
-    let displayEventsByDateHtml = '';
+ 
+    function addHtmltoId(input, elementId){
+        let htmlInput = "";
+        console.log(input.constructor.name);
+        
+        if (input.constructor.name == "User") {
+            console.log("User");
+            
+            htmlInput += `<li id="${input.uId}">Name: ${input.name} Id: ${input.uId}</li>`;
+        }
+        if(input.constructor.name == "Event") {
+            htmlInput += `<li id="${input.eId}">Name: ${input.eventName} Date: ${input.date} Category: ${input.category} Id: ${input.eId}</li>`;
+        }
+        $(`#${elementId}`).append(htmlInput);
+    }
 
     $("#add-user").submit(function (e) {
         let fName = $("#add-first-name").val();
@@ -10,8 +22,7 @@ $(document).ready(() => {
         let password = $("#add-password").val();
         let user = new User(fName, lName, password);
         eventRecommender.addUser(user);
-        displayUsersHtml += `<li id="${user.uId}">Name: ${user.name} Id: ${user.uId}</li>`;
-        $("#all-users").html(displayUsersHtml);
+        addHtmltoId(user, "all-users");
         e.preventDefault();
         this.reset();
     });
@@ -20,7 +31,7 @@ $(document).ready(() => {
         let id = $("#delete-user-id").val();
         let password = $("#delete-password").val();
         if (eventRecommender.deleteUser(id, password)) {
-           $(`li#${id}`).remove();
+           $(`#${all-users} #${id}`).remove();
            $("#error-message").remove();
         } else {
             $("#error-message").text("Please enter a valid userID and password");
@@ -35,9 +46,7 @@ $(document).ready(() => {
         let category = $("#add-category").val();
         let event = new Event(name, date, category);
         eventRecommender.addEvent(event);
-        displayEventsHtml += `<li id="${event.eId}">Name: ${event.eventName}
-            Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
-        $("#all-events").html(displayEventsHtml);
+        addHtmltoId(event, "all-events")
         e.preventDefault();
         this.reset();
     });
@@ -45,7 +54,7 @@ $(document).ready(() => {
      $("#delete-event").submit(function(e) {
         let id = $("#delete-event-id").val();
         if (eventRecommender.deleteEvent(id)) {
-           $(`li#${id}`).remove();
+           $(`#${all-users} #${id}`).remove();
            $("#error-message").remove();
         } else {
             $("#delete-event-error").text("Please enter a valid eventID");
