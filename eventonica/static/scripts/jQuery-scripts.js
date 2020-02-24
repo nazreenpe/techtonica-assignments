@@ -19,6 +19,17 @@ $(document).ready(() => {
         $(`#${elementId}`).html(htmlInput);
     }
 
+    function refreshUserEvents(elementId){
+        let htmlInput = "";
+        $.each(eventRecommender.userEvents, (userId) => {
+            let eventIds = eventRecommender.userEvents[userId];
+            eventIds.forEach(eventId => {
+                htmlInput += `<li id=${userId}-${eventId}>User: ${eventRecommender.users[userId].name} Event: ${eventRecommender.events[eventId].eventName}`;
+            });
+        })
+        $(`#${elementId}`).html(htmlInput);
+    }
+
     $("#add-user").submit(function (e) {
         let fName = $("#add-first-name").val();
         let lName = $("#add-last-name").val();
@@ -87,6 +98,17 @@ $(document).ready(() => {
         }
         $("#events-by-category").html(displayEventsByDateHtml);
         
+        e.preventDefault();
+    });
+
+    $("#save-user-event").submit(function(e) {
+        let eventId = $("#save-event-id").val();
+        let userId = $("#save-user-id").val();
+        if (eventRecommender.saveUserEvent(userId, eventId)) {
+            refreshUserEvents("event-signups");
+        } else{
+            console.log("Error: EventId/ userId doesn't exist");
+        }
         e.preventDefault();
     });
 })

@@ -20,7 +20,9 @@ class EventRecommender {
             } else {
                 this.userEvents[uId].push(eId);
             }
+            return true;
         }
+        return false;
     }
 
     deleteUser(id, password) {
