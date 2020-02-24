@@ -1,6 +1,15 @@
 $(document).ready(() => {
     const eventRecommender = new EventRecommender();
  
+    function refreshUsers(elementId) {
+        let htmlInput = "";
+        $.each(eventRecommender.users, (userId) => {
+            let user = eventRecommender.users[userId];
+            htmlInput += `<li id="${user.uId}">Name: ${user.name} Id: ${user.uId}</li>`;
+        })
+        $(`#${elementId}`).html(htmlInput);
+    }    
+
     function addHtmltoId(input, elementId){
         let htmlInput = "";
         console.log(input.constructor.name);
@@ -22,7 +31,7 @@ $(document).ready(() => {
         let password = $("#add-password").val();
         let user = new User(fName, lName, password);
         eventRecommender.addUser(user);
-        addHtmltoId(user, "all-users");
+        refreshUsers("all-users");
         e.preventDefault();
         this.reset();
     });
@@ -31,8 +40,7 @@ $(document).ready(() => {
         let id = $("#delete-user-id").val();
         let password = $("#delete-password").val();
         if (eventRecommender.deleteUser(id, password)) {
-           $(`#${all-users}`).remove(`#${id}`);
-           $("#error-message").remove();
+          refreshUsers("all-users");
         } else {
             $("#error-message").text("Please enter a valid userID and password");
         }
