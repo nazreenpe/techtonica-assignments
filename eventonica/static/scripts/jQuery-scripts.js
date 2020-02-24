@@ -78,4 +78,15 @@ $(document).ready(() => {
         e.preventDefault();
     });
     
+    $("#category-search").submit(function (e) { 
+        let category = $("#category-search-id").val();
+        let events = eventRecommender.findEventsByCategory(category);
+        let displayEventsByDateHtml = "";
+        for (const event of events) {
+            displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
+        }
+        $("#events-by-category").html(displayEventsByDateHtml);
+        
+        e.preventDefault();
+    });
 })

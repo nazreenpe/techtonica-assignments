@@ -50,7 +50,7 @@ class EventRecommender {
         return eventsByDate;
     }
 
-    findEventsbyCategory(category) {
+    findEventsByCategory(category) {
         let eventKeys = Object.keys(this.events).filter(
             key => this.events[key].category == category
         );
