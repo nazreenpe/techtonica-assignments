@@ -8,21 +8,15 @@ $(document).ready(() => {
             htmlInput += `<li id="${user.uId}">Name: ${user.name} Id: ${user.uId}</li>`;
         })
         $(`#${elementId}`).html(htmlInput);
-    }    
+    }
 
-    function addHtmltoId(input, elementId){
+    function refreshEvents(elementId) {
         let htmlInput = "";
-        console.log(input.constructor.name);
-        
-        if (input.constructor.name == "User") {
-            console.log("User");
-            
-            htmlInput += `<li id="${input.uId}">Name: ${input.name} Id: ${input.uId}</li>`;
-        }
-        if(input.constructor.name == "Event") {
-            htmlInput += `<li id="${input.eId}">Name: ${input.eventName} Date: ${input.date} Category: ${input.category} Id: ${input.eId}</li>`;
-        }
-        $(`#${elementId}`).append(htmlInput);
+        $.each(eventRecommender.events, (eventID) => {
+            let event = eventRecommender.events[eventID];
+            htmlInput += `<li id="${event.eId}">Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
+        })
+        $(`#${elementId}`).html(htmlInput);
     }
 
     $("#add-user").submit(function (e) {
@@ -41,8 +35,9 @@ $(document).ready(() => {
         let password = $("#delete-password").val();
         if (eventRecommender.deleteUser(id, password)) {
           refreshUsers("all-users");
+          $("#user-error-message").remove();
         } else {
-            $("#error-message").text("Please enter a valid userID and password");
+            $("#user-error-message").text("Please enter a valid userID and password");
         }
         e.preventDefault();
         this.reset();
@@ -54,7 +49,7 @@ $(document).ready(() => {
         let category = $("#add-category").val();
         let event = new Event(name, date, category);
         eventRecommender.addEvent(event);
-        addHtmltoId(event, "all-events")
+        refreshEvents("all-events")
         e.preventDefault();
         this.reset();
     });
@@ -62,8 +57,8 @@ $(document).ready(() => {
      $("#delete-event").submit(function(e) {
         let id = $("#delete-event-id").val();
         if (eventRecommender.deleteEvent(id)) {
-           $(`#${all-users}`).remove(`#${id}`);
-           $("#error-message").remove();
+            refreshEvents("all-events")
+           $("#delete-event-error").remove();
         } else {
             $("#delete-event-error").text("Please enter a valid eventID");
         }
