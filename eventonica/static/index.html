@@ -32,7 +32,7 @@
 
     <div>
         <h3>Delete User</h3>
-        <p id="error-message"> </p>
+        <p id="user-error-message"> </p>
         <form id="delete-user" autocomplete="off">
             <label>User ID:</label>
             <input type="text" id="delete-user-id">
@@ -108,12 +108,14 @@
         <input type="submit">
     </form>
     <h4>Results:</h4>
-    <ol>
+    <ol id="events-by-category">
         <!-- Use jQuery to add search results here-->
     </ol>
 </div>
 
 <div>
+    <h3>All Event Signups</h3>
+    <ul id="event-signups"></ul>
     <h3>Save Event for User</h3>
     <form id="save-user-event" autocomplete="off">
         <label>User ID:</label>

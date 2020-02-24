@@ -20,7 +20,9 @@ class EventRecommender {
             } else {
                 this.userEvents[uId].push(eId);
             }
+            return true;
         }
+        return false;
     }
 
     deleteUser(id, password) {
@@ -50,7 +52,7 @@ class EventRecommender {
         return eventsByDate;
     }
 
-    findEventsbyCategory(category) {
+    findEventsByCategory(category) {
         let eventKeys = Object.keys(this.events).filter(
             key => this.events[key].category == category
         );
