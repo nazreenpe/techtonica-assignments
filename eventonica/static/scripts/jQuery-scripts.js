@@ -67,20 +67,15 @@ $(document).ready(() => {
     })
 
     $("#date-search").submit(function (e) { 
-        let date = $("$date-search-id").val();
+        let date = $("#date-search-id").val();
         let events = eventRecommender.findEventsByDate(date);
-        if ( events.length > 1) {
-            for (const event of events) {
-                displayEventsByDateHtml += `<li id="${event.eId}">
-                Name: ${event.eventName}
-                Date: ${event.date} 
-                Category: ${event.category} 
-                Id: ${event.eId}</li>`;
-            }
-            $("events-by-date").html(displayEventsByDateHtml);
-        } 
-        e.preventDefault();
+        let displayEventsByDateHtml = "";
+        for (const event of events) {
+            displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
+        }
+        $("#events-by-date").html(displayEventsByDateHtml);
         
+        e.preventDefault();
     });
     
 })
