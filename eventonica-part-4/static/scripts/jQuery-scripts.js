@@ -89,15 +89,15 @@ $(document).ready(() => {
             dataType: "json",
             success: function (json) {
                 console.log(json);
-                json._embedded.events.forEach(event => {
-                    let name = event.name;
-                    let category = event.type;
-                    let date = moment(new Date(event.dates.start.dateTime)).format("MM/DD/YYYY");
+                let tmEvent = json._embedded.events[0];
+                let name = tmEvent.name;
+                let category = tmEvent.classifications[0].genre.name;
+                let date = moment(new Date(tmEvent.dates.start.dateTime)).format("MM/DD/YYYY");
 
-                    let newEvent = new Event(name, date, category);
-                    eventRecommender.addEvent(newEvent);
-                });
-                refreshEvents("all-events");
+                let event = new Event(name, date, category);
+                eventRecommender.addEvent(event);
+
+                refreshEvents("tm-events-by-keyword");
             },
             error: function (xhr, status, err) {
                 console.log("Error fecthing data from Ticketmaster")
