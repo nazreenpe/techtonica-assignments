@@ -164,11 +164,28 @@ $(document).ready(() => {
                 let name = tmEvent.name;
                 let category = tmEvent.classifications[0].genre.name;
                 let date = moment(new Date(tmEvent.dates.start.dateTime)).format("MM/DD/YYYY");
-
-                let event = new Event(name, date, category);
-                eventRecommender.addEvent(event);
-
-                refreshEvents("tm-events-by-keyword");
+                let event = {
+                    eventName: name, 
+                    date: date, 
+                    category: category
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/events",
+                    async: true,
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(event),
+                    success: function (json) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/events",
+                            success: function (events) {
+                                refreshEvents(events, "tm-events-by-keyword");
+                            }
+                        })
+                    }
+                });
             },
             error: function (xhr, status, err) {
                 console.log("Error fecthing data from Ticketmaster")
