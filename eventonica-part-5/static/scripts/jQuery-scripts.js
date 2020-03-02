@@ -1,6 +1,4 @@
 $(document).ready(() => {
-    // const eventRecommender = new EventRecommender();
-
     function refreshUsers(users, elementId) {
         let htmlInput = "";
         $.each(users, (userId) => {
