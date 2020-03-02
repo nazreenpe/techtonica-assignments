@@ -19,12 +19,12 @@ $(document).ready(() => {
         $(`#${elementId}`).html(htmlInput);
     }
 
-    function refreshUserEvents(elementId) {
+    function refreshUserEvents(userEvents, elementId) {
         let htmlInput = "";
-        $.each(eventRecommender.userEvents, (userId) => {
-            let eventIds = eventRecommender.userEvents[userId];
+        $.each(userEvents, (userId) => {
+            let eventIds = userEvents[userId];
             eventIds.forEach(eventId => {
-                htmlInput += `<li id=${userId}-${eventId}>User: ${eventRecommender.users[userId].name} Event: ${eventRecommender.events[eventId].eventName}`;
+                htmlInput += `<li id=${userId}-${eventId}>User: ${userId} Event: ${eventId}`;
             });
         })
         $(`#${elementId}`).html(htmlInput);
@@ -222,11 +222,28 @@ $(document).ready(() => {
     $("#save-user-event").submit(function (e) {
         let eventId = $("#save-event-id").val();
         let userId = $("#save-user-id").val();
-        if (eventRecommender.saveUserEvent(userId, eventId)) {
-            refreshUserEvents("event-signups");
-        } else {
-            console.log("Error: EventId/ userId doesn't exist");
-        }
+        
+        $.ajax({
+            type: "POST",
+            url: "/signups",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({eId: eventId, uId: userId}),
+            success: function (signup) {
+                $.ajax({
+                    type: "GET",
+                    url: "/signups",
+                    success: function (signups) { 
+                        refreshUserEvents(signups, "event-signups");
+                    }
+                })
+            },
+            error: function (err) {
+                console.log("Error: EventId/ userId doesn't exist");
+            }
+        });
         e.preventDefault();
+        this.reset();
     });
 })

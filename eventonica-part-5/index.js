@@ -66,4 +66,18 @@ app.post('/events/search', (req, res) => {
     }
 });
 
+app.post('/signups', (req, res) => {
+    let eId = req.body.eId;
+    let uId = req.body.uId;
+    if(eventRecommender.saveUserEvent(uId, eId)) {
+        res.send({eId: eId, uId: uId});
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+app.get('/signups', (req, res) => {
+    res.send(eventRecommender.userEvents);
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
