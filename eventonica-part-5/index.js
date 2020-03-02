@@ -19,6 +19,16 @@ app.post('/users', (req, res) => {
     res.send(user);
 })
 
+app.post('/users/delete', (req, res) => {
+    let uId = req.body.uId;
+    let password = req.body.password;
+    if(eventRecommender.deleteUser(uId, password)) {
+        res.send({uId: uId});
+    } else {
+        res.sendStatus(404);
+    }
+});
+
 app.get('/users', (req, res) => {
     res.send(eventRecommender.users);
 });

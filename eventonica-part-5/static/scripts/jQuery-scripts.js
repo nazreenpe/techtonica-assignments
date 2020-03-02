@@ -64,12 +64,29 @@ $(document).ready(() => {
     $("#delete-user").submit(function (e) {
         let id = $("#delete-user-id").val();
         let password = $("#delete-password").val();
-        if (eventRecommender.deleteUser(id, password)) {
-            refreshUsers("all-users");
-            $("#user-error-message").remove();
-        } else {
-            $("#user-error-message").text("Please enter a valid userID and password");
-        }
+
+        $.ajax({
+            type: "POST",
+            url: "/users/delete",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({uId: id, password: password}),
+            success: function (json) {
+                $("#user-error-message").remove();
+                $.ajax({
+                    type: "GET",
+                    url: "/users",
+                    success: function (users) {
+                        refreshUsers(users, "all-users");
+                    }
+                })
+            },
+            error: function(err) {
+                $("#user-error-message").text("Please enter a valid userID and password");
+            }
+        });
+
         e.preventDefault();
         this.reset();
     })
