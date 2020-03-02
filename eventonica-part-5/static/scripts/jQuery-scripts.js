@@ -1,11 +1,11 @@
 $(document).ready(() => {
-    const eventRecommender = new EventRecommender();
+    // const eventRecommender = new EventRecommender();
 
-    function refreshUsers(elementId) {
+    function refreshUsers(users, elementId) {
         let htmlInput = "";
-        $.each(eventRecommender.users, (userId) => {
-            let user = eventRecommender.users[userId];
-            htmlInput += `<li id="${user.uId}">Name: ${user.name} Id: ${user.uId}</li>`;
+        $.each(users, (userId) => {
+            let user = users[userId];
+            htmlInput += `<li id="${user.uId}">Name: ${user.fName} ${user.lName} Id: ${user.uId}</li>`;
         })
         $(`#${elementId}`).html(htmlInput);
     }
@@ -34,11 +34,30 @@ $(document).ready(() => {
         let fName = $("#add-first-name").val();
         let lName = $("#add-last-name").val();
         let password = $("#add-password").val();
-        let user = new User(fName, lName, password);
-        eventRecommender.addUser(user);
-        refreshUsers("all-users");
+        let user = {
+            fName: fName, 
+            lName: lName, 
+            password: password
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/users",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(user),
+            success: function (json) {
+                $.ajax({
+                    type: "GET",
+                    url: "/users",
+                    success: function (users) {
+                        refreshUsers(users, "all-users");
+                    }
+                })
+            }
+        });
         e.preventDefault();
-        this.reset();
     });
 
     $("#delete-user").submit(function (e) {
