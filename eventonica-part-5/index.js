@@ -44,4 +44,26 @@ app.get('/events', (req, res) => {
     res.send(eventRecommender.events);
 });
 
+app.delete('/events/:eId', (req, res) => {
+    let eId = req.params.eId;
+    if(eventRecommender.deleteEvent(eId)) {
+        res.send({eId: eId});
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+app.post('/events/search', (req, res) => {
+    let date = req.body.date;
+    let category = req.body.category;
+
+    if (date) {
+        res.send(eventRecommender.findEventsByDate(date));
+    } else if (category) {
+        res.send(eventRecommender.findEventsByCategory(category));
+    } else {
+        res.sendStatus(400);
+    }
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}`));

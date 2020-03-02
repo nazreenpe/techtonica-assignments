@@ -123,12 +123,27 @@ $(document).ready(() => {
 
     $("#delete-event").submit(function (e) {
         let id = $("#delete-event-id").val();
-        if (eventRecommender.deleteEvent(id)) {
-            refreshEvents("all-events")
-            $("#delete-event-error").remove();
-        } else {
-            $("#delete-event-error").text("Please enter a valid eventID");
-        }
+
+        $.ajax({
+            type: "DELETE",
+            url: `/events/${id}`,
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (json) {
+                $("#delete-event-error").remove();
+                $.ajax({
+                    type: "GET",
+                    url: "/events",
+                    success: function (events) {
+                        refreshEvents(events, "all-events");
+                    }
+                })
+            },
+            error: function(err) {
+                $("#delete-event-error").text("Please enter a valid eventID");
+            }
+        });
         e.preventDefault();
         this.reset();
     })
@@ -164,25 +179,43 @@ $(document).ready(() => {
 
     $("#date-search").submit(function (e) {
         let date = $("#date-search-id").val();
-        let events = eventRecommender.findEventsByDate(date);
-        let displayEventsByDateHtml = "";
-        for (const event of events) {
-            displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
-        }
-        $("#events-by-date").html(displayEventsByDateHtml);
 
+        $.ajax({
+            type: "POST",
+            url: "/events/search",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({date: date}),
+            success: function (events) {
+                let displayEventsByDateHtml = "";
+                for (const event of events) {
+                    displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
+                }
+                $("#events-by-date").html(displayEventsByDateHtml);
+            }
+        });
         e.preventDefault();
     });
 
     $("#category-search").submit(function (e) {
         let category = $("#category-search-id").val();
-        let events = eventRecommender.findEventsByCategory(category);
-        let displayEventsByDateHtml = "";
-        for (const event of events) {
-            displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
-        }
-        $("#events-by-category").html(displayEventsByDateHtml);
 
+        $.ajax({
+            type: "POST",
+            url: "/events/search",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({category: category}),
+            success: function (events) {
+                let displayEventsByDateHtml = "";
+                for (const event of events) {
+                    displayEventsByDateHtml += `<li id="${event.eId}"> Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
+                }
+                $("#events-by-category").html(displayEventsByDateHtml);
+            }
+        });
         e.preventDefault();
     });
 
