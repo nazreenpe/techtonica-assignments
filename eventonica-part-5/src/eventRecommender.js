@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 class EventRecommender {
     constructor() {
         this.events = Object.create(null);

@@ -10,10 +10,10 @@ $(document).ready(() => {
         $(`#${elementId}`).html(htmlInput);
     }
 
-    function refreshEvents(elementId) {
+    function refreshEvents(events, elementId) {
         let htmlInput = "";
-        $.each(eventRecommender.events, (eventID) => {
-            let event = eventRecommender.events[eventID];
+        $.each(events, (eventID) => {
+            let event = events[eventID];
             htmlInput += `<li id="${event.eId}">Name: ${event.eventName} Date: ${event.date} Category: ${event.category} Id: ${event.eId}</li>`;
         })
         $(`#${elementId}`).html(htmlInput);
@@ -58,6 +58,7 @@ $(document).ready(() => {
             }
         });
         e.preventDefault();
+        this.reset();
     });
 
     $("#delete-user").submit(function (e) {
@@ -77,10 +78,29 @@ $(document).ready(() => {
         let name = $("#add-event-name").val();
         let date = $("#add-event-date").val();
         let category = $("#add-category").val();
-        let event = new Event(name, date, category);
-        eventRecommender.addEvent(event);
-        refreshEvents("all-events")
+        let event = {
+            eventName: name, 
+            date: date, 
+            category: category
+        };
         e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/events",
+            async: true,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(event),
+            success: function (json) {
+                $.ajax({
+                    type: "GET",
+                    url: "/events",
+                    success: function (events) {
+                        refreshEvents(events, "all-events");
+                    }
+                })
+            }
+        });
         this.reset();
     });
 

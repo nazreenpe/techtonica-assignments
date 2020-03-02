@@ -23,4 +23,15 @@ app.get('/users', (req, res) => {
     res.send(eventRecommender.users);
 });
 
+app.post('/events', (req, res) => {
+    let eventData = req.body;
+    let event = new Event(eventData.eventName, eventData.date, eventData.category);
+    eventRecommender.addEvent(event);
+    res.send(event);
+})
+
+app.get('/events', (req, res) => {
+    res.send(eventRecommender.events);
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
