@@ -1,0 +1,15 @@
+{
+  "name": "eventonica-part-6",
+  "version": "1.0.0",
+  "description": "Eventonica is an event management system. It lets users browse a list of events and save the ones they are interested in.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg-promise": "10.4.4"
+  }
+}
