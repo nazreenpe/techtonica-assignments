@@ -1,7 +1,8 @@
 const moment = require('moment');
 
 class EventRecommender {
-    constructor() {
+    constructor(db) {
+        this.db = db;
         this.events = Object.create(null);
         this.users = Object.create(null);
         this.userEvents = Object.create(null);
@@ -11,8 +12,16 @@ class EventRecommender {
         this.events[event.eId] = event;
     }
 
-    addUser(user) {
-        this.users[user.uId] = user;
+    addUser(user, onSuccess, onFailure) {
+        return this.db.one('INSERT INTO users(fname, lname, password) VALUES($1, $2, $3) RETURNING uid',
+            [user.fName, user.lName, user.password])
+            .then(data => {
+                user.uId = data.uid;
+                onSuccess(user);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
 
     saveUserEvent(uId, eId) {
@@ -69,7 +78,7 @@ class User {
         this.fName = fName || "Anonymous";
         this.lName = lName || "";
         this.password = password;
-        this.uId = Math.random().toString(36).substr(2, 9);
+        this.uId = undefined;
     }
 
     get name() {

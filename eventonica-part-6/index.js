@@ -3,7 +3,9 @@ const bodyParser = require('body-parser')
 const app = express();
 const port = 3000;
 const {EventRecommender, User,  Event} = require('./src/EventRecommender');
-const eventRecommender = new EventRecommender();
+var pgp = require('pg-promise')();
+var db = pgp('postgres://eventonica:eventonica@localhost:5432/eventonica');
+const eventRecommender = new EventRecommender(db);
 
 app.use(bodyParser.json())
 app.use(express.static('static'))
@@ -15,9 +17,12 @@ app.get('/hello-world', (req, res) => {
 app.post('/users', (req, res) => {
     let userData = req.body;
     let user = new User(userData.fName, userData.lName, userData.password);
-    eventRecommender.addUser(user);
-    res.send(user);
-})
+    eventRecommender.addUser(user, (savedUser) => {
+        res.send(savedUser);
+    }, (error) => {
+        res.status(500).send({"error": "Could not save User"});
+    });
+});
 
 app.post('/users/delete', (req, res) => {
     let uId = req.body.uId;
