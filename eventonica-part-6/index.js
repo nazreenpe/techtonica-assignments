@@ -46,8 +46,11 @@ app.get('/users', (req, res) => {
 app.post('/events', (req, res) => {
     let eventData = req.body;
     let event = new Event(eventData.eventName, eventData.date, eventData.category);
-    eventRecommender.addEvent(event);
-    res.send(event);
+    eventRecommender.addEvent(event, (savedEvent) => {
+        res.send(savedEvent);
+    }, (error) => {
+        res.status(500).send({"error": "Could not save Event"});
+    });
 })
 
 app.get('/events', (req, res) => {

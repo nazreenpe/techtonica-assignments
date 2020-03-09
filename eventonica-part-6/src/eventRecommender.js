@@ -8,8 +8,17 @@ class EventRecommender {
         this.userEvents = Object.create(null);
     }
 
-    addEvent(event) {
-        this.events[event.eId] = event;
+    addEvent(event, onSuccess, onFailure) {
+        return this.db.one(
+            'INSERT INTO events(eventname, date, category) VALUES($1, $2, $3) RETURNING eid',
+            [event.eventName, event.date, event.category])
+            .then(data => {
+                event.eId = data.eid;
+                onSuccess(event);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
 
     addUser(user, onSuccess, onFailure) {
@@ -110,7 +119,7 @@ class Event {
         this.eventName = eventName || "Anonymous Event!";
         this.date = moment(new Date(date)).format('MMM DD YYYY') || '';
         this.category = category || "Random";
-        this.eId = Math.random().toString(36).substr(2, 9);
+        this.eId = undefined;
     }
 
     addCategory(category) {
