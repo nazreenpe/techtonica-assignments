@@ -29,8 +29,8 @@ app.post('/users/delete', (req, res) => {
     let uId = req.body.uId;
     let password = req.body.password;
 
-    eventRecommender.deleteUser( uId, password, 
-        () => { res.send({"uId" : uId})},
+    eventRecommender.deleteUser(uId, password,
+        () => { res.send({ "uId": uId }) },
         (error) => { res.status(404).status("Could not find the User") });
 });
 
@@ -65,7 +65,7 @@ app.delete('/events/:eId', (req, res) => {
     let id = req.params.eId;
 
     eventRecommender.deleteEvent(id,
-        () => { res.send({"eId" : id})},
+        () => { res.send({ "eId": id }) },
         (error) => { res.status(404).status("Could not find the event") });
 });
 
@@ -74,11 +74,23 @@ app.post('/events/search', (req, res) => {
     let category = req.body.category;
 
     if (date) {
-        res.send(eventRecommender.findEventsByDate(date));
+        eventRecommender.findEventsByDate(date,
+            (events) => {
+                res.send(events)
+            },
+            (error) => {
+                res.status(404).send({ "error": "Could not find Events matching the date" })
+            });
     } else if (category) {
-        res.send(eventRecommender.findEventsByCategory(category));
+        eventRecommender.findEventsByCategory(category,
+            (events) => {
+                res.send(events)
+            },
+            (error) => {
+                res.status(404).send({ "error": "Could not find Events matching the category" })
+            });
     } else {
-        res.sendStatus(400);
+        res.status(400).send({ "error": "Invalid search criteria"});
     }
 });
 

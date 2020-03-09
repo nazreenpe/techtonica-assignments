@@ -186,7 +186,7 @@ $(document).ready(() => {
                 });
             },
             error: function (xhr, status, err) {
-                console.log("Error fecthing data from Ticketmaster")
+                console.log("Error fectching data from Ticketmaster")
             }
         });
 
@@ -211,6 +211,7 @@ $(document).ready(() => {
             }
         });
         e.preventDefault();
+        this.reset();
     });
 
     $("#category-search").submit(function (e) {
@@ -232,6 +233,7 @@ $(document).ready(() => {
             }
         });
         e.preventDefault();
+        this.reset();
     });
 
     $("#save-user-event").submit(function (e) {

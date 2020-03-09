@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 class EventRecommender {
     constructor(db) {
         this.db = db;
@@ -94,23 +92,38 @@ class EventRecommender {
             .catch((error) => { onFailure(error) });
     }
 
-    findEventsByDate(date) {
-        let filteringDate = moment(new Date(date)).format('MMM DD YYYY');
-        let eventKeys = Object.keys(this.events).filter(
-            key => this.events[key].date == filteringDate
-        );
-        let eventsByDate = [];
-        eventKeys.forEach(key => eventsByDate.push(this.events[key]));
-        return eventsByDate;
+    findEventsByDate(date, onSuccess, onFailure) {
+        return this.db.any(
+            'SELECT * FROM events WHERE date=$1', [date])
+            .then(data => {
+                let events = data.map(element => {
+                    let event = new Event(element.eventname, element.date, element.category)
+                    event.eId = element.eid;
+                    return event;
+                });
+
+                onSuccess(events);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
 
-    findEventsByCategory(category) {
-        let eventKeys = Object.keys(this.events).filter(
-            key => this.events[key].category == category
-        );
-        let eventsByCategory = [];
-        eventKeys.forEach(key => eventsByCategory.push(this.events[key]));
-        return eventsByCategory;
+    findEventsByCategory(category, onSuccess, onFailure) {
+        return this.db.any(
+            'SELECT * FROM events WHERE category=$1', [category])
+            .then(data => {
+                let events = data.map(element => {
+                    let event = new Event(element.eventname, element.date, element.category)
+                    event.eId = element.eid;
+                    return event;
+                });
+
+                onSuccess(events);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
 }
 
@@ -131,7 +144,7 @@ class User {
 class Event {
     constructor(eventName, date, category) {
         this.eventName = eventName || "Anonymous Event!";
-        this.date = moment(new Date(date)).format('MMM DD YYYY') || '';
+        this.date = new Date(date);
         this.category = category || "Random";
         this.eId = undefined;
     }
@@ -140,7 +153,7 @@ class Event {
         this.category = category;
     }
     addDate(date) {
-        this.date = moment(new Date(date)).format('MMM DD YYYY');
+        this.date = new Date(date);
     }
 }
 
