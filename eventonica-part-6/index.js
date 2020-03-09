@@ -38,7 +38,7 @@ app.get('/users', (req, res) => {
     eventRecommender.getUsers((users) => {
         res.send(users);
     }, (error) => {
-        res.status(500).send({ "error": "Could not find Users" });        
+        res.status(500).send({ "error": "Could not find Users" });
     });
 });
 
@@ -49,25 +49,23 @@ app.post('/events', (req, res) => {
     eventRecommender.addEvent(event, (savedEvent) => {
         res.send(savedEvent);
     }, (error) => {
-        res.status(500).send({"error": "Could not save Event"});
+        res.status(500).send({ "error": "Could not save Event" });
     });
 })
 
 app.get('/events', (req, res) => {
-    eventRecommender.getEvents( (events) => {
+    eventRecommender.getEvents((events) => {
         res.send(events);
     }, (error) => {
-        res.status(500).send({ "error": "Could not find Events" });        
+        res.status(500).send({ "error": "Could not find Events" });
     });
 });
 
 app.delete('/events/:eId', (req, res) => {
-    let eId = req.params.eId;
-    if (eventRecommender.deleteEvent(eId)) {
-        res.send({ eId: eId });
-    } else {
-        res.sendStatus(404);
-    }
+    let id = req.params.eId;
+    eventRecommender.deleteEvent(id,
+        () => { res.send({"eId" : id})},
+        (error) => { res.status(404).status("Could not find the error") });
 });
 
 app.post('/events/search', (req, res) => {

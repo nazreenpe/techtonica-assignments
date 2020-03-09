@@ -21,7 +21,7 @@ class EventRecommender {
             });
     }
 
-    getEvents( onSuccess, onFailure) {
+    getEvents(onSuccess, onFailure) {
         return this.db.any(
             'SELECT * FROM events')
             .then(data => {
@@ -30,7 +30,7 @@ class EventRecommender {
                     event.eId = element.eid;
                     return event;
                 });
-                
+
                 onSuccess(events);
             })
             .catch(error => {
@@ -51,7 +51,7 @@ class EventRecommender {
             });
     }
 
-    getUsers( onSuccess, onFailure) {
+    getUsers(onSuccess, onFailure) {
         return this.db.any(
             'SELECT * FROM users')
             .then(data => {
@@ -60,14 +60,14 @@ class EventRecommender {
                     user.uId = element.uid;
                     return user;
                 });
-                
+
                 onSuccess(users);
             })
             .catch(error => {
                 onFailure(error);
             });
     }
-    
+
 
     saveUserEvent(uId, eId) {
         if (this.users[uId] != null && this.events[eId] != null) {
@@ -82,20 +82,17 @@ class EventRecommender {
     }
 
     deleteUser(id, password) {
-        if(this.users[id] != null && this.users[id].password == password) {
+        if (this.users[id] != null && this.users[id].password == password) {
             delete this.users[id];
             return true;
         }
         return false;
     }
 
-    deleteEvent(id) {
-        if(this.events[id] != null) {
-            delete this.events[id];
-            return true;
-        } else {
-            return false;
-        }
+    deleteEvent(id, onSuccess, onFailure) {
+        return this.db.result('DELETE FROM events WHERE eid=$1', [id])
+            .then((result) => { onSuccess() })
+            .catch((error) => { onFailure(error) });
     }
 
     findEventsByDate(date) {
@@ -148,8 +145,8 @@ class Event {
     }
 }
 
-if (typeof module != 'undefined'){
-    module.exports = { EventRecommender, User,  Event} 
+if (typeof module != 'undefined') {
+    module.exports = { EventRecommender, User, Event }
 }
 
 
