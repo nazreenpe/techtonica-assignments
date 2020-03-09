@@ -21,6 +21,23 @@ class EventRecommender {
             });
     }
 
+    getEvents( onSuccess, onFailure) {
+        return this.db.any(
+            'SELECT * FROM events')
+            .then(data => {
+                let events = data.map(element => {
+                    let event = new Event(element.eventname, element.date, element.category)
+                    event.eId = element.eid;
+                    return event;
+                });
+                
+                onSuccess(events);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
+    }
+
     addUser(user, onSuccess, onFailure) {
         return this.db.one(
             'INSERT INTO users(fname, lname, password) VALUES($1, $2, $3) RETURNING uid',
@@ -100,6 +117,7 @@ class EventRecommender {
         return eventsByCategory;
     }
 }
+
 
 class User {
     constructor(fName, lName, password) {

@@ -54,7 +54,11 @@ app.post('/events', (req, res) => {
 })
 
 app.get('/events', (req, res) => {
-    res.send(eventRecommender.events);
+    eventRecommender.getEvents( (events) => {
+        res.send(events);
+    }, (error) => {
+        res.status(500).send({ "error": "Could not find Events" });        
+    });
 });
 
 app.delete('/events/:eId', (req, res) => {
