@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const app = express();
 const port = 3000;
-const {EventRecommender, User,  Event} = require('./src/EventRecommender');
+const { EventRecommender, User, Event } = require('./src/EventRecommender');
 var pgp = require('pg-promise')();
 var db = pgp('postgres://eventonica:eventonica@localhost:5432/eventonica');
 const eventRecommender = new EventRecommender(db);
@@ -20,23 +20,28 @@ app.post('/users', (req, res) => {
     eventRecommender.addUser(user, (savedUser) => {
         res.send(savedUser);
     }, (error) => {
-        res.status(500).send({"error": "Could not save User"});
+        res.status(500).send({ "error": "Could not save User" });
     });
 });
 
 app.post('/users/delete', (req, res) => {
     let uId = req.body.uId;
     let password = req.body.password;
-    if(eventRecommender.deleteUser(uId, password)) {
-        res.send({uId: uId});
+    if (eventRecommender.deleteUser(uId, password)) {
+        res.send({ uId: uId });
     } else {
         res.sendStatus(404);
     }
 });
 
 app.get('/users', (req, res) => {
-    res.send(eventRecommender.users);
+    eventRecommender.getUsers((users) => {
+        res.send(users);
+    }, (error) => {
+        res.status(500).send({ "error": "Could not find Users" });        
+    });
 });
+
 
 app.post('/events', (req, res) => {
     let eventData = req.body;
@@ -51,8 +56,8 @@ app.get('/events', (req, res) => {
 
 app.delete('/events/:eId', (req, res) => {
     let eId = req.params.eId;
-    if(eventRecommender.deleteEvent(eId)) {
-        res.send({eId: eId});
+    if (eventRecommender.deleteEvent(eId)) {
+        res.send({ eId: eId });
     } else {
         res.sendStatus(404);
     }
@@ -74,8 +79,8 @@ app.post('/events/search', (req, res) => {
 app.post('/signups', (req, res) => {
     let eId = req.body.eId;
     let uId = req.body.uId;
-    if(eventRecommender.saveUserEvent(uId, eId)) {
-        res.send({eId: eId, uId: uId});
+    if (eventRecommender.saveUserEvent(uId, eId)) {
+        res.send({ eId: eId, uId: uId });
     } else {
         res.sendStatus(404);
     }

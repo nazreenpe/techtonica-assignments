@@ -13,7 +13,8 @@ class EventRecommender {
     }
 
     addUser(user, onSuccess, onFailure) {
-        return this.db.one('INSERT INTO users(fname, lname, password) VALUES($1, $2, $3) RETURNING uid',
+        return this.db.one(
+            'INSERT INTO users(fname, lname, password) VALUES($1, $2, $3) RETURNING uid',
             [user.fName, user.lName, user.password])
             .then(data => {
                 user.uId = data.uid;
@@ -23,6 +24,24 @@ class EventRecommender {
                 onFailure(error);
             });
     }
+
+    getUsers( onSuccess, onFailure) {
+        return this.db.any(
+            'SELECT * FROM users')
+            .then(data => {
+                let users = data.map(element => {
+                    let user = new User(element.fname, element.lname, element.password)
+                    user.uId = element.uid;
+                    return user;
+                });
+                
+                onSuccess(users);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
+    }
+    
 
     saveUserEvent(uId, eId) {
         if (this.users[uId] != null && this.events[eId] != null) {
