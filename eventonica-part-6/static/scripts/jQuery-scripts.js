@@ -20,9 +20,9 @@ $(document).ready(() => {
     function refreshUserEvents(userEvents, elementId) {
         let htmlInput = "";
         $.each(userEvents, (userId) => {
-            let eventIds = userEvents[userId];
-            eventIds.forEach(eventId => {
-                htmlInput += `<li id=${userId}-${eventId}>User: ${userId} Event: ${eventId}`;
+            let signups = userEvents[userId];
+            signups.forEach(signup => {
+                htmlInput += `<li id=${userId}-${signup.eid}>User: ${signup.fname} ${signup.lname} Event: ${signup.eventname}`;
             });
         })
         $(`#${elementId}`).html(htmlInput);

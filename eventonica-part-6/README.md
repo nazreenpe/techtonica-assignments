@@ -32,3 +32,11 @@ CREATE TABLE events(
     eid serial PRIMARY KEY
 );
 ```
+
+```
+CREATE TABLE user_events(
+    id varchar(36) PRIMARY KEY,
+    uid INTEGER,
+    eid INTEGER
+);
+```

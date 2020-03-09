@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid').v4;
+
 class EventRecommender {
     constructor(db) {
         this.db = db;
@@ -67,17 +69,38 @@ class EventRecommender {
     }
 
 
-    saveUserEvent(uId, eId) {
-        if (this.users[uId] != null && this.events[eId] != null) {
-            if (this.userEvents[uId] == null) {
-                this.userEvents[uId] = [eId];
-            } else {
-                this.userEvents[uId].push(eId);
-            }
-            return true;
-        }
-        return false;
+    saveUserEvent(uId, eId, onSuccess, onFailure) {
+        let id = uuidv4();
+        return this.db.result(
+            'INSERT INTO user_events(id, uid, eid) VALUES($1, $2, $3)',
+            [id, uId, eId])
+            .then(data => {
+                onSuccess(uId, eId);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
+
+    getUserEvents(onSuccess, onFailure) {
+        return this.db.any(
+            'SELECT ue.uid, ue.eid, u.fName, u.lName, e.eventname FROM user_events ue ' + 
+            'JOIN users u ON u.uid = ue.uid ' + 
+            'JOIN events e ON e.eid = ue.eid')
+            .then(data => {
+                let signups = data.reduce( (result, current) => {
+                    if(!result[current.uid]) result[current.uid] = [current];
+                    else result[current.uid].push(current);
+                    return result;
+                }, {});
+
+                onSuccess(signups);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
+    }
+
 
     deleteUser(id, password, onSuccess, onFailure) {
         return this.db.result(

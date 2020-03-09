@@ -4,8 +4,11 @@ const app = express();
 const port = 3000;
 const { EventRecommender, User, Event } = require('./src/EventRecommender');
 var pgp = require('pg-promise')();
+const uuidv4 = require('uuid').v4;
 var db = pgp('postgres://eventonica:eventonica@localhost:5432/eventonica');
 const eventRecommender = new EventRecommender(db);
+
+
 
 app.use(bodyParser.json())
 app.use(express.static('static'))
@@ -97,15 +100,19 @@ app.post('/events/search', (req, res) => {
 app.post('/signups', (req, res) => {
     let eId = req.body.eId;
     let uId = req.body.uId;
-    if (eventRecommender.saveUserEvent(uId, eId)) {
-        res.send({ eId: eId, uId: uId });
-    } else {
-        res.sendStatus(404);
-    }
+
+    eventRecommender.saveUserEvent(uId, eId, 
+        (uId, eId) => {res.send({ eId: eId, uId: uId });}, 
+        () => { res.status(404);});
+    
 });
 
 app.get('/signups', (req, res) => {
-    res.send(eventRecommender.userEvents);
+    eventRecommender.getUserEvents((events) => {
+        res.send(events);
+    }, (error) => {
+        res.status(500).send({ "error": "Could not find Events" });
+    });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}`));
