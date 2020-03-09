@@ -17,6 +17,7 @@ app.get('/hello-world', (req, res) => {
 app.post('/users', (req, res) => {
     let userData = req.body;
     let user = new User(userData.fName, userData.lName, userData.password);
+
     eventRecommender.addUser(user, (savedUser) => {
         res.send(savedUser);
     }, (error) => {
@@ -27,11 +28,10 @@ app.post('/users', (req, res) => {
 app.post('/users/delete', (req, res) => {
     let uId = req.body.uId;
     let password = req.body.password;
-    if (eventRecommender.deleteUser(uId, password)) {
-        res.send({ uId: uId });
-    } else {
-        res.sendStatus(404);
-    }
+
+    eventRecommender.deleteUser( uId, password, 
+        () => { res.send({"uId" : uId})},
+        (error) => { res.status(404).status("Could not find the User") });
 });
 
 app.get('/users', (req, res) => {
@@ -63,9 +63,10 @@ app.get('/events', (req, res) => {
 
 app.delete('/events/:eId', (req, res) => {
     let id = req.params.eId;
+
     eventRecommender.deleteEvent(id,
         () => { res.send({"eId" : id})},
-        (error) => { res.status(404).status("Could not find the error") });
+        (error) => { res.status(404).status("Could not find the event") });
 });
 
 app.post('/events/search', (req, res) => {

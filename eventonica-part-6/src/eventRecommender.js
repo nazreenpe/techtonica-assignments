@@ -81,12 +81,11 @@ class EventRecommender {
         return false;
     }
 
-    deleteUser(id, password) {
-        if (this.users[id] != null && this.users[id].password == password) {
-            delete this.users[id];
-            return true;
-        }
-        return false;
+    deleteUser(id, password, onSuccess, onFailure) {
+        return this.db.result(
+            'DELETE FROM users WHERE uid=$1 AND password=$2', [id, password])
+            .then((result) => { onSuccess() })
+            .catch((error) => { onFailure(error) });
     }
 
     deleteEvent(id, onSuccess, onFailure) {
