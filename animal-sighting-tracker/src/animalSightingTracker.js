@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid').v4;
+
 class AnimalSightingTracker {
     constructor() {
 
@@ -19,6 +21,7 @@ class Species {
         this.estimatedNumber = estimatedNumber;
         this.conservationStatusCode = conservationStatusCode;
         this.createdAt = new Date();
+        this.id = uuidv4();
     }
 }
 
@@ -27,6 +30,7 @@ class Individual {
         this.nickName = nickName;
         this.species = species;
         this.createdAt = new Date();
+        this.id = uuidv4();
     }
 }
 
@@ -38,6 +42,7 @@ class Sighting {
         this.isHealthy = isHealthy;
         this.sightersEmail = sightersEmail;
         this.createdAt = new Date();
+        this.id = uuidv4();
     }
 
 }

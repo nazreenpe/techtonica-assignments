@@ -1,5 +1,7 @@
 describe("AnimalSightingTracker", () => {
     const { Species, Individual, Sighting } = require('../src/animalSightingTracker.js');
+    const uuidv4 = require('uuid').v4;
+
     let species, individual, sighting;
 
     beforeEach(() => {
@@ -15,6 +17,7 @@ describe("AnimalSightingTracker", () => {
             expect(species.estimatedNumber).toEqual(84);
             expect(species.conservationStatusCode).toEqual('CR');
             expect(species.createdAt).toBeDefined();
+            expect(species.id).toBeDefined();
         });
     });
 
