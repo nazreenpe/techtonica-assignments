@@ -27,7 +27,30 @@ Create `species` table
     scientificName varchar(256) not null,
     estimatedNumber integer not null,
     conservationStatusCode varchar not null,
-    created_at TIMESTAMP not null,
-    uId integer PRIMARY KEY
+    created_at date not null,
+    id integer PRIMARY KEY
+);
+```
+
+Create `individuals` table:
+```
+CREATE TABLE individuals(
+    nickName varchar(256) not null,
+    animal_species_id integer not null,
+    created_at date not null,
+    id integer PRIMARY KEY
+);
+```
+
+Create `sightings` table:
+```
+CREATE TABLE sightings(
+    sightedAt date,
+    individualSighted_id integer not null,
+    location varchar(256) not null,
+    isHealthy boolean,
+    sightersEmail varchar(320),
+    created_at date not null,
+    id integer PRIMARY KEY
 );
 ```

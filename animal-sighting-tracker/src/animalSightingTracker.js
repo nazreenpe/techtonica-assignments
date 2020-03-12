@@ -1,12 +1,12 @@
 const uuidv4 = require('uuid').v4;
 
 class AnimalSightingTracker {
-    constructor() {
-
+    constructor(db) {
+        this.db = db;
     }
 
     addSightings() {
-
+        
     }
 
     getSightings() {
@@ -47,4 +47,4 @@ class Sighting {
 
 }
 
-module.exports = { AnimalSightingTracker, Species, Individual, Sighting};
+module.exports = { AnimalSightingTracker, Species, Individual, Sighting };
