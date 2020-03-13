@@ -20,7 +20,7 @@ Create `animal_tracker` database:
 CREATE DATABASE animal_tracker WITH OWNER animal_tracker;
 ```
 
-Create `species` table
+Create `animal_species` table
 ```
  CREATE TABLE animal_species(
     commonName varchar(256) not null,

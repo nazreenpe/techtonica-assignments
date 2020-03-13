@@ -5,11 +5,36 @@ class AnimalSightingTracker {
         this.db = db;
     }
 
-    addSightings() {
-        
+    addSpecies(sighting, onSuccess, onFailure) {
+        return this.db.one(
+            'INSERT INTO animal_species(  commonName varchar(256) not null, scientificName varchar(256) not null, estimatedNumber integer not null, conservationStatusCode varchar not null, created_at date not null, id integer PRIMARY KEY) VALUES($1, $2, $3, $4, $5, $6) RETURNING id',
+            [species.commonName, species.scientificName, species.estimatedNumber,
+            species.conservationStatusCode, species.createdAt, species.id])
+            .then(data => { 
+                onSuccess(data);
+            })
+            .catch(error => {
+                onFailure(error);
+            });
     }
 
-    getSightings() {
+    getSpecies(onSuccess, onFailure) {
+
+    }
+
+    addIndividual(sighting, onSuccess, onFailure) {
+
+    }
+
+    getIndividuals(onSuccess, onFailure) {
+
+    }
+
+    addSighting(sighting, onSuccess, onFailure) {
+
+    }
+
+    getSightings(onSuccess, onFailure) {
 
     }
 }
